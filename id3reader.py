@@ -125,9 +125,9 @@ class _Frame:
             # Decompress the compressed data.
             self.rawData = zlib.decompress(self.rawData)
 
-        if self.id[0] == 'T':
+        if self.id[0] == ord('T'):
             # Text fields start with T
-            encoding = ord(self.rawData[0])
+            encoding = self.rawData[0]
             if 0 <= encoding < len(_encodings):
                 #if _c: _coverage('encoding%d' % encoding)
                 value = self.rawData[1:].decode(_encodings[encoding])
@@ -145,11 +145,11 @@ class _Frame:
         elif self.id[0] == 'W':
             # URL fields start with W
             self.value = self.rawData.strip('\0')
-            if self.id == 'WXXX':
+            if self.id == b'WXXX':
                 self.value = self.value.split('\0')
-        elif self.id == 'CDM':
+        elif self.id == b'CDM':
             # ID3v2.2.1 Compressed Data Metaframe
-            if self.rawData[0] == 'z':
+            if self.rawData[0] == ord('z'):
                 self.rawData = zlib.decompress(self.rawData[5:])
             else:
                 #if _c: _coverage('badcdm!')
@@ -292,7 +292,7 @@ class Reader:
         if len(header) < 10:
             return
         hstuff = struct.unpack('!3sBBBBBBB', header)
-        if hstuff[0] != "ID3":
+        if hstuff[0] != b'ID3':
             # Doesn't look like an ID3v2 tag,
             # Try reading an ID3v1 tag.
             self._readId3v1()
@@ -391,7 +391,7 @@ class Reader:
         tag = self.file.read(128)
         if len(tag) != 128:
             return
-        if tag[0:3] != 'TAG':
+        if tag[0:3] != b'TAG':
             return
         self.header = _Header()
         self.header.majorVersion = 1
@@ -412,13 +412,12 @@ class Reader:
             pass
         return
 
-    _validIdChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-
     def _isValidId(self, id):
-        """ Determine if the id bytes make a valid ID3 id.
+        """ Determine if the id bytes make a valid ID3 id.  Valid characters include
+            [A-Z0-9]
         """
         for c in id:
-            if not c in self._validIdChars:
+            if not ((c >= ord('A') and c <= ord('Z')) or (c >= ord('0') and c <= ord('9'))):
                 #if _c: _coverage('bad id')
                 return False
         #if _c: _coverage('id '+id)
