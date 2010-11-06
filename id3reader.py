@@ -40,10 +40,7 @@ def _safestr(s):
     """ Get a good string for printing, that won't throw exceptions,
         no matter what's in it.
     """
-    try:
-        return unicode(s).encode(sys.getdefaultencoding())
-    except UnicodeError:
-        return '?: '+repr(s)
+    return s.encode("ascii", "ignore")
 
 # Can I just say that I think the whole concept of genres is bogus,
 # since they are so subjective?  And the idea of letting someone else pick
