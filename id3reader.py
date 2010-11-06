@@ -15,13 +15,13 @@ _encodings = ['iso8859-1', 'utf-16', 'utf-16be', 'utf-8']
 # Use these ids with getValue, and you don't need to know what
 # version of ID3 the file contains.
 _simpleDataMapping = {
-    'album':        ('TALB', 'TAL', 'v1album', 'TOAL'),
-    'performer':    ('TPE1', 'TP1', 'v1performer', 'TOPE'),
-    'title':        ('TIT2', 'TT2', 'v1title'),
-    'track':        ('TRCK', 'TRK', 'v1track'),
-    'year':         ('TYER', 'TYE', 'v1year'),
-    'genre':        ('TCON', 'TCO', 'v1genre'),
-    'comment':      ('COMM', 'COM', 'v1comment'),
+    'album':        (b'TALB', b'TAL', b'v1album', b'TOAL'),
+    'performer':    (b'TPE1', b'TP1', b'v1performer', b'TOPE'),
+    'title':        (b'TIT2', b'TT2', b'v1title'),
+    'track':        (b'TRCK', b'TRK', b'v1track'),
+    'year':         (b'TYER', b'TYE', b'v1year'),
+    'genre':        (b'TCON', b'TCO', b'v1genre'),
+    'comment':      (b'COMM', b'COM', b'v1comment'),
 }
 
 # Tracing
