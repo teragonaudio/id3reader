@@ -24,16 +24,10 @@ _simpleDataMapping = {
     'comment':      ('COMM', 'COM', 'v1comment'),
 }
 
-# Provide booleans for older Pythons.
-try:
-    True, False
-except NameError:
-    True, False = 1==1, 1==0
-
 # Tracing
 _t = False
 def _trace(msg):
-    print msg
+    print(msg)
 
 # Coverage
 _c = False
@@ -162,7 +156,7 @@ class _Frame:
                 self.rawData = zlib.decompress(self.rawData[5:])
             else:
                 #if _c: _coverage('badcdm!')
-                raise Id3Error, 'Unknown CDM compression: %02x' % self.rawData[0]
+                raise Id3Error('Unknown CDM compression: %02x' % self.rawData[0])
             #@TODO: re-interpret the decompressed frame.
 
         elif self.id in _simpleDataMapping['comment']:
@@ -208,7 +202,7 @@ class Reader:
 
         bCloseFile = False
         # If self.file is a string of some sort, then open it to get a file.
-        if isinstance(self.file, (type(''), type(u''))):
+        if isinstance(self.file, (type(''), type(''))):
             self.file = open(self.file, 'rb')
             bCloseFile = True
 
@@ -226,14 +220,14 @@ class Reader:
         #if _t: _trace("ask %d (%s)" % (num,desc))
         if num > self.bytesLeft:
             #if _c: _coverage('long!')
-            raise Id3Error, 'Long read (%s): (%d > %d)' % (desc, num, self.bytesLeft)
+            raise Id3Error('Long read (%s): (%d > %d)' % (desc, num, self.bytesLeft))
         bytes = self.file.read(num)
         self.bytesLeft -= num
 
         if len(bytes) < num:
             #if _t: _trace("short read with %d left, %d total" % (self.bytesLeft, self.header.size))
             #if _c: _coverage('short!')
-            raise Id3Error, 'Short read (%s): (%d < %d)' % (desc, len(bytes), num)
+            raise Id3Error('Short read (%s): (%d < %d)' % (desc, len(bytes), num))
 
         if self.header.bUnsynchronized:
             nUnsync = 0
@@ -266,7 +260,7 @@ class Reader:
         return (bytes[0] << 21) + (bytes[1] << 14) + (bytes[2] << 7) + bytes[3]
 
     def _getInteger(self, bytes):
-        i = 0;
+        i = 0
         if type(bytes) == type(''):
             bytes = [ ord(c) for c in bytes ]
         for b in bytes:
@@ -328,7 +322,7 @@ class Reader:
             self._readFrame = self._readFrame_rev4
         else:
             #if _c: _coverage('badmajor!')
-            raise Id3Error, "Unsupported major version: %d" % self.header.majorVersion
+            raise Id3Error("Unsupported major version: %d" % self.header.majorVersion)
 
         # Interpret the flags
         self._interpretFlags()
@@ -539,10 +533,10 @@ class Reader:
             convenience label ('title', 'performer', ...),
             or return None if there is no such value.
         """
-        if self.frames.has_key(id):
+        if id in self.frames:
             if hasattr(self.frames[id], 'value'):
                 return self.frames[id].value
-        if _simpleDataMapping.has_key(id):
+        if id in _simpleDataMapping:
             for id2 in _simpleDataMapping[id]:
                 v = self.getValue(id2)
                 if v:
@@ -550,38 +544,38 @@ class Reader:
         return None
 
     def getRawData(self, id):
-        if self.frames.has_key(id):
+        if id in self.frames:
             return self.frames[id].rawData
         return None
 
     def dump(self):
         import pprint
-        print "Header:"
-        print self.header
-        print "Frames:"
+        print("Header:")
+        print(self.header)
+        print("Frames:")
         for fr in self.allFrames:
             if len(fr.rawData) > 30:
                 fr.rawData = fr.rawData[:30]
         pprint.pprint(self.allFrames)
         for fr in self.allFrames:
             if hasattr(fr, 'value'):
-                print '%s: %s' % (fr.id, _safestr(fr.value))
+                print('%s: %s' % (fr.id, _safestr(fr.value)))
             else:
-                print '%s= %s' % (fr.id, _safestr(fr.rawData))
+                print('%s= %s' % (fr.id, _safestr(fr.rawData)))
         for label in _simpleDataMapping.keys():
             v = self.getValue(label)
             if v:
-                print 'Label %s: %s' % (label, _safestr(v))
+                print('Label %s: %s' % (label, _safestr(v)))
 
     def dumpCoverage(self):
         feats = _features.keys()
         feats.sort()
         for feat in feats:
-            print "Feature %-12s: %d" % (feat, _features[feat])
+            print("Feature %-12s: %d" % (feat, _features[feat]))
 
 if __name__ == '__main__':
     if len(sys.argv) < 2 or '-?' in sys.argv:
-        print "Give me a filename"
+        print("Give me a filename")
     else:
         id3 = Reader(sys.argv[1])
         id3.dump()
