@@ -199,7 +199,7 @@ class Reader:
 
         bCloseFile = False
         # If self.file is a string of some sort, then open it to get a file.
-        if isinstance(self.file, (type(''), type(''))):
+        if isinstance(self.file, str):
             self.file = open(self.file, 'rb')
             bCloseFile = True
 
