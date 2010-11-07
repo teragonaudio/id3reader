@@ -108,6 +108,7 @@ class _Frame:
         self.bCompressed = False
         self.bEncrypted = False
         self.bInGroup = False
+        self.encoding = _encodings[0]
 
     def __str__(self):
         return str(self.__dict__)
@@ -132,7 +133,8 @@ class _Frame:
             encoding = self.rawData[0]
             if 0 <= encoding < len(_encodings):
                 #if _c: _coverage('encoding%d' % encoding)
-                value = self.rawData[1:].decode(_encodings[encoding])
+                self.encoding = _encodings[encoding]
+                value = self.rawData[1:].decode(self.encoding)
             else:
                 #if _c: _coverage('bad encoding')
                 value = self.rawData[1:]
@@ -198,6 +200,7 @@ class Reader:
         self.allFrames = []
         self.bytesLeft = 0
         self.padbytes = ''
+        self.encoding = _encodings[0]
 
         bCloseFile = False
         # If self.file is a string of some sort, then open it to get a file.
@@ -274,7 +277,8 @@ class Reader:
             except IndexError:
                 value = "(%d)" % rawData
         else:
-            value = rawData.strip(' \t\r\n').split('\0')[0]
+            decodedValue = rawData.decode(self.encoding)
+            value = decodedValue.strip(' \t\r\n').split('\0')[0]
         if value:
             frame = _Frame()
             frame.id = id
@@ -332,6 +336,8 @@ class Reader:
         while self.bytesLeft > 0:
             frame = self._readFrame()
             if frame:
+                if self.encoding is None and frame.encoding is not None:
+                    self.encoding = frame.encoding
                 frame._interpret()
                 self.frames[frame.id] = frame
                 self.allFrames.append(frame)
