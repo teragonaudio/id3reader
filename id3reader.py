@@ -232,7 +232,8 @@ class Reader:
             nUnsync = 0
             i = 0
             while True:
-                i = bytes.find('\xFF\x00', i)
+                # TODO: PyCharm warns about literal chars > 127, and it might have a point
+                i = bytes.find(b'\xFF\x00', i)
                 if i == -1:
                     break
                 #if _t: _trace("unsync at %d" % (i+1))
