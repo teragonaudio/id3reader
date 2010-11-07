@@ -269,12 +269,10 @@ class Reader:
 
     def _addV1Frame(self, id, rawData):
         if id == 'v1genre':
-            assert len(rawData) == 1
-            nGenre = ord(rawData)
             try:
-                value = _genres[nGenre]
+                value = _genres[rawData]
             except IndexError:
-                value = "(%d)" % nGenre
+                value = "(%d)" % rawData
         else:
             value = rawData.strip(' \t\r\n').split('\0')[0]
         if value:
