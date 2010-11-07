@@ -18,6 +18,7 @@ _simpleDataMapping = {
     'album':        (b'TALB', b'TAL', b'v1album', b'TOAL'),
     'performer':    (b'TPE1', b'TP1', b'v1performer', b'TOPE'),
     'artist':       (b'TPE1', b'TP1', b'v1performer', b'TOPE'),
+    'albumArtist':  (b'TPE2', b'TP2'),
     'title':        (b'TIT2', b'TT2', b'v1title'),
     'track':        (b'TRCK', b'TRK', b'v1track'),
     'year':         (b'TYER', b'TYE', b'v1year'),
