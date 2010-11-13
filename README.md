@@ -6,7 +6,11 @@ Id3reader.py was originally written by [Ned Batchelder](http://nedbatchelder.com
 
 Installation
 ------------
-To install id3reader, just copy id3reader.py to your Python path.
+To install Id3reader, just copy id3reader.py to your Python path.
+
+License
+-------
+Id3reader is made available under the Simplified BSD License, and offered without warranty.  See the "LICENSE.txt" file for more information.
 
 Usage
 -----
@@ -26,7 +30,7 @@ In addition to whatever literal ID3 tag ids are found in the file (TP1, TIT2, et
     id3r.getValue('performer')
     id3r.getValue('title')
     id3r.getValue('track')
-    id3r.getValue('year'
+    id3r.getValue('year')
 
 These ids find the appropriate ID3 id for the ID3 version read from the file, so you can get at this basic data without having to consider the different versions of the ID3 spec.
 
