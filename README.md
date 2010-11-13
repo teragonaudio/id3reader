@@ -3,11 +3,11 @@ About Id3reader
 Id3reader.py is a Python module that reads ID3 metadata tags in MP3 files.  It can read ID3v1, ID3v2.2, ID3v2.3, or ID3v2.4 tags.  It does not write tags at all.
 
 Installation
-~~~~~~~~~~~~
+------------
 To install id3reader, just copy id3reader.py to your Python path.
 
 Usage
-~~~~~
+-----
 Using id3reader couldn't be simpler:
 
 import id3reader
@@ -31,11 +31,11 @@ These ids find the appropriate ID3 id for the ID3 version read from the file, so
 If you run id3reader from the console, it will dump the ID3 information for the MP3 file named as its argument.
 
 Coverage
-~~~~~~~~
+--------
 The ID3 spec is quite extensive, and specifies functionality that I have never encountered in actual MP3 files. Id3reader implements as much of the spec as I have seen used. If you have files that id3reader does not properly interpret, please mail them to me. I'll extend id3reader to read them.
 
 History
-~~~~~~~
+-------
 * 5 January 2004: It wasn't reading ID3v1 tags properly, and had problems with empty string values.
 * 9 January 2004: Now it reads ID3v2.3 properly, and reads unsyncronized tags.
 * 13 January 2004: Fix unsynchronized reading, reads compressed frames, improved detection of end of frames, extended headers are read (but not interpreted), multi-string frames are interpreted, and the file is closed if we opened it.
