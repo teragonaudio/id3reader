@@ -51,7 +51,7 @@ _simpleDataMapping = {
     'albumArtist':  (b'TPE2', b'TP2'),
     'title':        (b'TIT2', b'TT2', b'v1title'),
     'track':        (b'TRCK', b'TRK', b'v1track'),
-    'year':         (b'TYER', b'TYE', b'v1year'),
+    'year':         (b'TYER', b'TYE', b'v1year', b'TDRC', b'TDRL'),
     'genre':        (b'TCON', b'TCO', b'v1genre'),
     'comment':      (b'COMM', b'COM', b'v1comment'),
 }
